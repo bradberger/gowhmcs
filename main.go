@@ -141,7 +141,6 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 
 	form := url.Values{}
 	for k, v := range m {
-		fmt.Printf("%s=%s\n", k, v)
 		form.Add(k, v)
 	}
 
@@ -157,9 +156,6 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 	if err != nil {
 		return []byte{}, err
 	}
-
-	// For debugging, remove later.
-	fmt.Printf("%s", body)
 
 	// The most basic responses have no message, so allow for that here.
 	s := APIBasicResponse{}

@@ -29,7 +29,7 @@ type ExistingClient struct {
 	Notes               string       `json:"notes,omitempty"`             //
 	CardType            string       `json:"cardtype,omitempty"`          // - visa, mastercard, etc...
 	CardNum             string       `json:"cardnum,omitempty"`           // - cc number
-	ExpDate             Date         `json:"expdate,omitempty"`           // - cc expiry date
+	ExpDate             string       `json:"expdate,omitempty"`           // - cc expiry date
 	StartDate           Date         `json:"startdate,omitempty"`         // - cc start date
 	IssueNumber         string       `json:"issuenumber,omitempty"`       // - cc issue number
 	BankName            string       `json:"bankname,omitempty"`          // - for use with direct debit gateway
@@ -61,4 +61,18 @@ func (c *ExistingClient) ByEmail(email string) {
 
 func (c *ExistingClient) ByID(id string) {
 	c.ClientID = id
+}
+
+func (a *API) UpdateExistingClient(c *ExistingClient) error {
+
+	if err := c.Error(); err != nil {
+		return err
+	}
+
+	if _, err := a.Do("updateclient", &c); err != nil {
+		return err
+	}
+
+	return nil
+
 }

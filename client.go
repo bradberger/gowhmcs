@@ -1,5 +1,9 @@
 package whmcs
 
+const (
+	ErrClientNotFound string = "Client Not Found"
+)
+
 type Client struct {
 	NewClient
 	ExistingClient
@@ -39,7 +43,8 @@ type NewClient struct {
 	SkipValidation bool              `json:"skipvalidation"`
 }
 
-func (c *Client) Error() error {
+func (c *NewClient) Error() error {
+	// @TODO Add error checks here.
 	return nil
 }
 
@@ -52,7 +57,24 @@ type ClientDetailsReq struct {
 func (a *API) ClientExists(email string) (bool, error) {
 	c := ClientDetailsReq{Email: email}
 	if _, err := a.Do("getclientsdetails", &c); err != nil {
+		if err.Error() == ErrClientNotFound {
+			return false, nil
+		}
 		return false, err
 	}
 	return true, nil
+}
+
+func (a *API) AddClient(c *NewClient) error {
+
+	if err := c.Error(); err != nil {
+		return err
+	}
+
+	if _, err := a.Do("addclient", &c); err != nil {
+		return err
+	}
+
+	return nil
+
 }
