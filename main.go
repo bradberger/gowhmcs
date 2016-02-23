@@ -7,10 +7,10 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 
 	"github.com/bradberger/gowhmcs/serializer"
 )
@@ -18,35 +18,16 @@ import (
 var (
 	ErrNoAPIURL      = errors.New("THe WHMCS API URL endpoint is empty")
 	ErrNoAPIUsername = errors.New("THe WHMCS API username is empty")
-	DateFormat       = "01/02/2006"
 )
 
 type API struct {
 	Endpoint, Username, Password string
 }
 
-// Date implements WHMCS formatted JSON marshaler for time values
-type Date time.Time
-
-// MarshalJSON changes the date to a format which WHMCS recognizes.
-// @TODO This is for the AddTransaction momentarily, and must match the WHMCS
-// date format of the local install because the WHMCS API is whack. We need to
-// be able to change this as needed. Also, other API endpoints require other
-// fixed date formats, so we have to take that into account down the road too.
-func (d Date) MarshalJSON() ([]byte, error) {
-	t := time.Time(d)
-	f := t.Format(DateFormat)
-	str := fmt.Sprintf(`"%s"`, f)
-	return []byte(str), nil
-}
-
-func (d Date) Time() time.Time {
-	return time.Time(d)
-}
-
 // CustomFields @TODO
 type CustomFields map[string]string
 
+// MarshalJSON formats the custom fields in a way that WHMCS recognizes them.
 func (c CustomFields) MarshalJSON() ([]byte, error) {
 	str, err := serializer.Encode(c)
 	if err != nil {
@@ -59,6 +40,7 @@ func (c CustomFields) MarshalJSON() ([]byte, error) {
 // ConfigOptions @TODO
 type ConfigOptions map[string]string
 
+// MarshalJSON formats the custom fields in a way that WHMCS recognizes them.
 func (c ConfigOptions) MarshalJSON() ([]byte, error) {
 	str, err := serializer.Encode(c)
 	if err != nil {
@@ -145,6 +127,7 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 	}
 
 	// POST it.
+	log.Printf("Send: %+v", m)
 	url := fmt.Sprintf("%s/includes/api.php", a.Endpoint)
 	r, err := http.PostForm(url, form)
 	if err != nil {
@@ -156,6 +139,8 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 	if err != nil {
 		return []byte{}, err
 	}
+
+	log.Printf("Body: %s", body)
 
 	// The most basic responses have no message, so allow for that here.
 	s := APIBasicResponse{}

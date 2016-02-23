@@ -1,6 +1,7 @@
 package whmcs
 
 import (
+    "encoding/json"
     "errors"
 )
 
@@ -63,16 +64,25 @@ func (c *ExistingClient) ByID(id string) {
 	c.ClientID = id
 }
 
-func (a *API) UpdateExistingClient(c *ExistingClient) error {
+type UpdateClientResult struct {
+    Result string `json:"result"`
+    ClientID int64 `json:"clientid,string"`
+}
 
-	if err := c.Error(); err != nil {
-		return err
+func (a *API) UpdateExistingClient(c *ExistingClient) (r *UpdateClientResult, err error) {
+
+	err = c.Error()
+    if err != nil {
+		return
 	}
 
-	if _, err := a.Do("updateclient", &c); err != nil {
-		return err
+	body, err := a.Do("updateclient", &c)
+    if err != nil {
+		return
 	}
 
-	return nil
+    r = &UpdateClientResult{}
+    err = json.Unmarshal(body, r)
+	return
 
 }

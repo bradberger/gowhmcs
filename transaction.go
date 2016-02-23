@@ -18,8 +18,8 @@ type Transaction struct {
 	Date          Date    `json:"date" xml:"date"`
 
 	// Optional fields
-	UserID      string  `json:"userid,omitempty" xml:"userid,omitempty"`
-	InvoiceID   string  `json:"invoiceid,omitempty" xml:"invoiceid,omitempty"`
+	UserID      int64   `json:"userid,string,omitempty" xml:"userid,omitempty"`
+	InvoiceID   int64   `json:"invoiceid,string,omitempty" xml:"invoiceid,omitempty"`
 	Description string  `json:"description,omitempty" xml:"description"`
 	Fees        float64 `json:"fees,string",omitempty xml:"fees"`
 	TransID     string  `json:"transid,omitempty" xml:"transid"`

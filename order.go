@@ -86,8 +86,8 @@ func (a *API) AddOrder(o *Order) (r *OrderResponse, err error) {
 // OrderResponse holds the successful order information sent via from the WHMCS API.
 type OrderResponse struct {
 	Result     string `json:"result"`
-	OrderID    int64  `json:"orderid,string"`
-	InvoiceID  int64  `json:"invoiceid,string"`
+	OrderID    int64  `json:"orderid"`
+	InvoiceID  int64  `json:"invoiceid"`
 	ProductIDs string `json:'productids'`
 	AddonIDs   string `json:"addonids"`
 	DomainIDs  string `json:"domainids"`
@@ -106,4 +106,34 @@ func (o *OrderResponse) Addons() []string {
 // Domains returns a slice of domains related to the order.
 func (o *OrderResponse) Domains() []string {
 	return strings.Split(o.DomainIDs, ",")
+}
+
+type AcceptOrderRequest struct {
+
+	OrderID int64   `json:"orderid,string"`
+
+	// Optional attributes
+	ServerID        int64  `json:"serverid,string,omitempty"`
+	ServiceUsername string `json:"serviceusername"`
+	ServicePassword string `json:"servicepassword"`
+	AutoSetup       bool   `json:"autosetup,string,omitempty"`
+	SendRegistrar   bool   `json:"sendregistrar,string,omitempty"`
+	SendEmail       bool   `json:"sendemail,string,omitempty"`
+
+}
+
+func (o *AcceptOrderRequest) Error() error {
+	return nil
+}
+
+func (a *API) AcceptOrder(o *AcceptOrderRequest) (err error) {
+
+	err = o.Error()
+	if err != nil {
+		return
+	}
+
+	_, err = a.Do("acceptorder", o)
+	return
+
 }

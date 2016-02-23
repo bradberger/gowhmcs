@@ -1,5 +1,10 @@
 package whmcs
 
+import (
+	"encoding/json"
+	"log"
+)
+
 const (
 	ErrClientNotFound string = "Client Not Found"
 )
@@ -26,10 +31,10 @@ type NewClient struct {
 	// Optional
 	CompanyName    string            `json:"companyname"`
 	Address2       string            `json:"address2"`
-	Currency       int64             `json:"currency"`
+	Currency       string             `json:"currency"`
 	ClientIP       string            `json:"clientip"`
 	Language       string            `json:"language"`
-	GroupID        int64             `json:"groupid"`
+	GroupID        int64             `json:"groupid,string"`
 	SecurityQID    int64             `json:"securityqid,string"`
 	SecurityQans   string            `json:"securityqans"`
 	Notes          string            `json:"notes"`
@@ -39,13 +44,19 @@ type NewClient struct {
 	StartDate      string            `json:"startdate"`
 	IssueNumber    string            `json:"isseunumber"`
 	CustomFields   map[string]string `json:"customfields"`
-	NoEmail        bool              `json:"noemail"`
-	SkipValidation bool              `json:"skipvalidation"`
+	NoEmail        bool              `json:"noemail,string"`
+	SkipValidation bool              `json:"skipvalidation,string"`
 }
 
 func (c *NewClient) Error() error {
 	// @TODO Add error checks here.
 	return nil
+}
+
+type AddClientResult struct {
+	ClientID int64 `json:"clientid"`
+	Result string `json:"result"`
+	Message string `json:"message"`
 }
 
 type ClientDetailsReq struct {
@@ -65,16 +76,21 @@ func (a *API) ClientExists(email string) (bool, error) {
 	return true, nil
 }
 
-func (a *API) AddClient(c *NewClient) error {
+func (a *API) AddClient(c *NewClient) (r *AddClientResult, err error) {
 
-	if err := c.Error(); err != nil {
-		return err
+	err = c.Error()
+	if err != nil {
+		return
 	}
 
-	if _, err := a.Do("addclient", &c); err != nil {
-		return err
+	body, err := a.Do("addclient", &c)
+	if err != nil {
+		return
 	}
 
-	return nil
+	r = &AddClientResult{}
+	err = json.Unmarshal(body, &r)
+	log.Printf("Addclient: %+v %v\n", r, err)
+	return
 
 }
