@@ -1,3 +1,5 @@
+// Package whmcs provides Go bindings to interact with the WHMCS external API.
+// Right now it's under heavy development, so feel free to jump in and help out.
 package whmcs
 
 import (
@@ -15,6 +17,7 @@ import (
 	"github.com/bradberger/gowhmcs/serializer"
 )
 
+// Errors which prevent the API from connecting.
 var (
 	ErrNoAPIURL      = errors.New("THe WHMCS API URL endpoint is empty")
 	ErrNoAPIUsername = errors.New("THe WHMCS API username is empty")
