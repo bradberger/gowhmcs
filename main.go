@@ -20,10 +20,6 @@ var (
 	ErrNoAPIUsername = errors.New("THe WHMCS API username is empty")
 )
 
-type API struct {
-	Endpoint, Username, Password string
-}
-
 // CustomFields @TODO
 type CustomFields map[string]string
 

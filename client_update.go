@@ -1,12 +1,12 @@
 package whmcs
 
 import (
-    "encoding/json"
-    "errors"
+	"errors"
 )
 
+// Various errors returned
 var (
-    ErrNoClientDetails = errors.New("Client must have either ClientEmail or ClientID")
+	ErrNoClientDetails = errors.New("Client must have either ClientEmail or ClientID")
 )
 
 type ExistingClient struct {
@@ -49,40 +49,25 @@ type ExistingClient struct {
 
 }
 
+// UpdateClientResult is the WHMCS response when updating a client.
+type UpdateClientResult struct {
+	Result   string `json:"result"`
+	ClientID int64  `json:"clientid,string"`
+}
+
 func (c *ExistingClient) Error() error {
-    if c.ClientID == "" && c.ClientEmail == "" {
-        return ErrNoClientDetails
-    }
+	if c.ClientID == "" && c.ClientEmail == "" {
+		return ErrNoClientDetails
+	}
 	return nil
 }
 
+// ByEmail sets the clients email with the given email string
 func (c *ExistingClient) ByEmail(email string) {
 	c.ClientEmail = email
 }
 
+// ByID sets the client's ID with the given id string
 func (c *ExistingClient) ByID(id string) {
 	c.ClientID = id
-}
-
-type UpdateClientResult struct {
-    Result string `json:"result"`
-    ClientID int64 `json:"clientid,string"`
-}
-
-func (a *API) UpdateExistingClient(c *ExistingClient) (r *UpdateClientResult, err error) {
-
-	err = c.Error()
-    if err != nil {
-		return
-	}
-
-	body, err := a.Do("updateclient", &c)
-    if err != nil {
-		return
-	}
-
-    r = &UpdateClientResult{}
-    err = json.Unmarshal(body, r)
-	return
-
 }

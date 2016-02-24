@@ -1,7 +1,6 @@
 package whmcs
 
 import (
-	"encoding/json"
 	"errors"
 	"strings"
 )
@@ -65,24 +64,6 @@ func (o *Order) Error() error {
 	return nil
 }
 
-// AddOrder calls the "addorder" action of the WHMCS API.
-func (a *API) AddOrder(o *Order) (r *OrderResponse, err error) {
-
-	err = o.Error()
-	if err != nil {
-		return
-	}
-
-	body, err := a.Do("addorder", o)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(body, &r)
-	return
-
-}
-
 // OrderResponse holds the successful order information sent via from the WHMCS API.
 type OrderResponse struct {
 	Result     string `json:"result"`
@@ -108,9 +89,9 @@ func (o *OrderResponse) Domains() []string {
 	return strings.Split(o.DomainIDs, ",")
 }
 
+// AcceptOrderRequest is a struct of available parameters to accept an order.
 type AcceptOrderRequest struct {
-
-	OrderID int64   `json:"orderid,string"`
+	OrderID int64 `json:"orderid,string"`
 
 	// Optional attributes
 	ServerID        int64  `json:"serverid,string,omitempty"`
@@ -119,21 +100,8 @@ type AcceptOrderRequest struct {
 	AutoSetup       bool   `json:"autosetup,string,omitempty"`
 	SendRegistrar   bool   `json:"sendregistrar,string,omitempty"`
 	SendEmail       bool   `json:"sendemail,string,omitempty"`
-
 }
 
 func (o *AcceptOrderRequest) Error() error {
 	return nil
-}
-
-func (a *API) AcceptOrder(o *AcceptOrderRequest) (err error) {
-
-	err = o.Error()
-	if err != nil {
-		return
-	}
-
-	_, err = a.Do("acceptorder", o)
-	return
-
 }

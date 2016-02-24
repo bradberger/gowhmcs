@@ -4,12 +4,14 @@ import (
 	"errors"
 )
 
+// Various error responses
 var (
 	ErrTransactionAmountsEmpty       = errors.New("Transaction amounts empty")
 	ErrTransactionPaymentMethodEmpty = errors.New("Transaction payment method empty")
 	ErrTransactionDateEmpty          = errors.New("Transaction date empty")
 )
 
+// Transaction is a struct containing parameters which can be sent to create a new transaction.
 type Transaction struct {
 	// Required fields
 	AmountIn      float64 `json:"amountin,string" xml:"amountin"`
@@ -37,18 +39,4 @@ func (t *Transaction) Error() error {
 		return ErrTransactionDateEmpty
 	}
 	return nil
-}
-
-func (a *API) AddTransaction(t *Transaction) error {
-
-	if err := t.Error(); err != nil {
-		return err
-	}
-
-	if _, err := a.Do("addtransaction", &t); err != nil {
-		return err
-	}
-
-	return nil
-
 }

@@ -1,19 +1,11 @@
 package whmcs
 
-import (
-	"encoding/json"
-	"log"
-)
-
 const (
+	// ErrClientNotFound is the current WHMCS response when the client does not exist.
 	ErrClientNotFound string = "Client Not Found"
 )
 
-type Client struct {
-	NewClient
-	ExistingClient
-}
-
+// NewClient contains the basic structure of data for creating a new client.
 type NewClient struct {
 
 	// Required if adding.
@@ -31,7 +23,7 @@ type NewClient struct {
 	// Optional
 	CompanyName    string            `json:"companyname"`
 	Address2       string            `json:"address2"`
-	Currency       string             `json:"currency"`
+	Currency       string            `json:"currency"`
 	ClientIP       string            `json:"clientip"`
 	Language       string            `json:"language"`
 	GroupID        int64             `json:"groupid,string"`
@@ -48,49 +40,20 @@ type NewClient struct {
 	SkipValidation bool              `json:"skipvalidation,string"`
 }
 
-func (c *NewClient) Error() error {
-	// @TODO Add error checks here.
-	return nil
-}
-
+// AddClientResult is the WHMCS response when adding a client.
 type AddClientResult struct {
-	ClientID int64 `json:"clientid"`
-	Result string `json:"result"`
-	Message string `json:"message"`
+	ClientID int64  `json:"clientid"`
+	Result   string `json:"result"`
+	Message  string `json:"message"`
 }
 
+// ClientDetailsReq is the struct of parameters available to retrieve client details.
 type ClientDetailsReq struct {
 	ClientID string `json:"clientid,omitempty"`
 	Email    string `json:"email,omitempty"`
 	Stats    bool   `json:"stats,omitempty"`
 }
 
-func (a *API) ClientExists(email string) (bool, error) {
-	c := ClientDetailsReq{Email: email}
-	if _, err := a.Do("getclientsdetails", &c); err != nil {
-		if err.Error() == ErrClientNotFound {
-			return false, nil
-		}
-		return false, err
-	}
-	return true, nil
-}
-
-func (a *API) AddClient(c *NewClient) (r *AddClientResult, err error) {
-
-	err = c.Error()
-	if err != nil {
-		return
-	}
-
-	body, err := a.Do("addclient", &c)
-	if err != nil {
-		return
-	}
-
-	r = &AddClientResult{}
-	err = json.Unmarshal(body, &r)
-	log.Printf("Addclient: %+v %v\n", r, err)
-	return
-
+func (c *NewClient) Error() error {
+	return nil
 }

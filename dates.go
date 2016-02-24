@@ -1,15 +1,15 @@
 package whmcs
 
 import (
-    "fmt"
-    "time"
+	"fmt"
+	"time"
 )
 
 var (
-    // DateFormat is the Go date format string that must match the WHMCS install's
-    // date format to support WHMCS date fields which must be formatted according
-    // to the system date/time format.00
-    DateFormat       = "01/02/2006"
+	// DateFormat is the Go date format string that must match the WHMCS install's
+	// date format to support WHMCS date fields which must be formatted according
+	// to the system date/time format.00
+	DateFormat = "01/02/2006"
 )
 
 // Date implements WHMCS formatted JSON marshaler for time values that need to
@@ -33,14 +33,13 @@ func (d Date) Time() time.Time {
 	return time.Time(d)
 }
 
-
 // InvoiceDate is a time.Time value that gets marshaled into the correct
 // format for the WHMCS invoice date fields.
 type InvoiceDate time.Time
 
 // MarshalJSON changes the date to a format which WHMCS recognizes for invoices.
-func (d InvoiceDate) MarshalJSON()  ([]byte, error) {
-    t := time.Time(d)
+func (d InvoiceDate) MarshalJSON() ([]byte, error) {
+	t := time.Time(d)
 	f := t.Format("20060102")
 	str := fmt.Sprintf(`"%s"`, f)
 	return []byte(str), nil
@@ -48,5 +47,5 @@ func (d InvoiceDate) MarshalJSON()  ([]byte, error) {
 
 // Time returns the original time.Time value of the date.
 func (d InvoiceDate) Time() time.Time {
-    return time.Time(d)
+	return time.Time(d)
 }
