@@ -22,10 +22,10 @@ type Transaction struct {
 	// Optional fields
 	UserID      int64   `json:"userid,string,omitempty" xml:"userid,omitempty"`
 	InvoiceID   int64   `json:"invoiceid,string,omitempty" xml:"invoiceid,omitempty"`
-	Description string  `json:"description,omitempty" xml:"description"`
-	Fees        float64 `json:"fees,string",omitempty xml:"fees"`
-	TransID     string  `json:"transid,omitempty" xml:"transid"`
-	Credit      bool    `json:"credit,string" xml:"credit"`
+	Description string  `json:"description,omitempty" xml:"description,omitempty"`
+	Fees        float64 `json:"fees,string,omitempty" xml:"fees,omitempty"`
+	TransID     string  `json:"transid,omitempty" xml:"transid,omitempty"`
+	Credit      bool    `json:"credit,string,omitempty" xml:"credit,omitempty"`
 }
 
 func (t *Transaction) Error() error {

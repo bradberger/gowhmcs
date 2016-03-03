@@ -23,7 +23,7 @@ type Order struct {
 
 	// Required attributes
 	ClientID      int64  `json:"clientid,string"`
-	PID           int64  `json:"int64,string"`
+	PID           int64  `json:"pid,string"`
 	Domain        string `json:"domain"`
 	BillingCycle  string `json:"billingcycle"`
 	DomainType    string `json:"domaintype"`
@@ -95,9 +95,10 @@ type AcceptOrderRequest struct {
 
 	// Optional attributes
 	ServerID        int64  `json:"serverid,string,omitempty"`
-	ServiceUsername string `json:"serviceusername"`
-	ServicePassword string `json:"servicepassword"`
+	ServiceUsername string `json:"serviceusername,omitempty"`
+	ServicePassword string `json:"servicepassword,omitempty"`
 	AutoSetup       bool   `json:"autosetup,string,omitempty"`
+	Registrar       string `json:"registrar,omitempty"`
 	SendRegistrar   bool   `json:"sendregistrar,string,omitempty"`
 	SendEmail       bool   `json:"sendemail,string,omitempty"`
 }

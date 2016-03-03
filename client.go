@@ -21,23 +21,23 @@ type NewClient struct {
 	Password2   string `json:"password2"`
 
 	// Optional
-	CompanyName    string            `json:"companyname"`
-	Address2       string            `json:"address2"`
-	Currency       string            `json:"currency"`
-	ClientIP       string            `json:"clientip"`
-	Language       string            `json:"language"`
-	GroupID        int64             `json:"groupid,string"`
-	SecurityQID    int64             `json:"securityqid,string"`
-	SecurityQans   string            `json:"securityqans"`
-	Notes          string            `json:"notes"`
-	CardNum        string            `json:"cardnum"`
-	CardType       string            `json:"cardtype"`
-	ExpDate        string            `json:"expdate"`
-	StartDate      string            `json:"startdate"`
-	IssueNumber    string            `json:"isseunumber"`
-	CustomFields   map[string]string `json:"customfields"`
-	NoEmail        bool              `json:"noemail,string"`
-	SkipValidation bool              `json:"skipvalidation,string"`
+	CompanyName    string            `json:"companyname,omitempty"`
+	Address2       string            `json:"address2,omitempty"`
+	Currency       string            `json:"currency,omitempty"`
+	ClientIP       string            `json:"clientip,omitempty"`
+	Language       string            `json:"language,omitempty"`
+	GroupID        int64             `json:"groupid,string,omitempty"`
+	SecurityQID    int64             `json:"securityqid,string,omitempty"`
+	SecurityQans   string            `json:"securityqans,omitempty"`
+	Notes          string            `json:"notes,omitempty"`
+	CardNum        string            `json:"cardnum,omitempty"`
+	CardType       string            `json:"cardtype,omitempty"`
+	ExpDate        string            `json:"expdate,omitempty"`
+	StartDate      string            `json:"startdate,omitempty"`
+	IssueNumber    string            `json:"isseunumber,omitempty"`
+	CustomFields   map[string]string `json:"customfields,omitempty"`
+	NoEmail        bool              `json:"noemail,string,omitempty"`
+	SkipValidation bool              `json:"skipvalidation,string,omitempty"`
 }
 
 // AddClientResult is the WHMCS response when adding a client.
