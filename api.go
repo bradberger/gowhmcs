@@ -2,7 +2,6 @@ package whmcs
 
 import (
 	"encoding/json"
-	"log"
 )
 
 // API is the main structure from which API calls are sent.
@@ -153,7 +152,22 @@ func (a *API) AddClient(c *NewClient) (r *AddClientResult, err error) {
 
 	r = &AddClientResult{}
 	err = json.Unmarshal(body, &r)
-	log.Printf("Addclient: %+v %v\n", r, err)
 	return
+}
 
+func (a *API) UpdateClientProduct (p *ClientProduct) (r *UpdateClientProductResult, err error) {
+
+	err = p.Error()
+	if err != nil {
+		return
+	}
+
+	body, err := a.Do("updateclientproduct", &p)
+	if err != nil {
+		return
+	}
+
+	r = &UpdateClientProductResult{}
+	err = json.Unmarshal(body, r)
+	return
 }

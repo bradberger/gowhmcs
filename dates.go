@@ -49,3 +49,9 @@ func (d InvoiceDate) MarshalJSON() ([]byte, error) {
 func (d InvoiceDate) Time() time.Time {
 	return time.Time(d)
 }
+
+type ProductDate time.Time
+
+func (d ProductDate) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf(`"%s"`, time.Time(d).Format("2006-01-02"))), nil
+}

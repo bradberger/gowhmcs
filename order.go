@@ -35,7 +35,7 @@ type Order struct {
 	// Optional attributes
 	CustomFields   CustomFields  `json:"customfields,omitempty"`
 	ConfigOptions  ConfigOptions `json:"configoptions,omitempty"`
-	PriceOverride  int64         `json:"priceoverride,string,omitempty"`
+	PriceOverride  float64       `json:"priceoverride,string,omitempty"`
 	PromoCode      string        `json:"promocode,omitempty"`
 	PromoOverride  string        `json:"promooverride,omitempty"`
 	AffID          string        `json:"affid,omitempty"`
