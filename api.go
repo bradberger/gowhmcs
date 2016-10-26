@@ -2,6 +2,7 @@ package whmcs
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // API is the main structure from which API calls are sent.
@@ -13,15 +14,14 @@ type API struct {
 func (a *API) AddTransaction(t *Transaction) error {
 
 	if err := t.Error(); err != nil {
-		return err
+		return fmt.Errorf("gowhmcs addtranscation error: %v", err)
 	}
 
 	if _, err := a.Do("addtransaction", &t); err != nil {
-		return err
+		return fmt.Errorf("gowhmcs addtranscation error: %v", err)
 	}
 
 	return nil
-
 }
 
 // UpdateInvoice updates the invoice with the given parameters of `r`.
@@ -34,11 +34,15 @@ func (a *API) UpdateInvoice(i *UpdateInvoiceRequest) (r *UpdateInvoiceResponse, 
 
 	body, err := a.Do("updateinvoice", i)
 	if err != nil {
+		err = fmt.Errorf("gowhmcs updateinvoice error: %v", err)
 		return
 	}
 
 	r = &UpdateInvoiceResponse{}
-	err = json.Unmarshal(body, r)
+	if err = json.Unmarshal(body, r); err != nil {
+		err = fmt.Errorf("gowhmcs updateinvoice error: %v", err)
+	}
+
 	return
 
 }
@@ -67,16 +71,20 @@ func (a *API) UpdateExistingClient(c *ExistingClient) (r *UpdateClientResult, er
 
 	err = c.Error()
 	if err != nil {
+		err = fmt.Errorf("gowhmcs updateexistingclient error: %v", err)
 		return
 	}
 
 	body, err := a.Do("updateclient", &c)
 	if err != nil {
+		err = fmt.Errorf("gowhmcs updateexistingclient error: %v", err)
 		return
 	}
 
 	r = &UpdateClientResult{}
-	err = json.Unmarshal(body, r)
+	if err = json.Unmarshal(body, r); err != nil {
+		err = fmt.Errorf("gowhmcs updateexistingclient error: %v", err)
+	}
 	return
 
 }
@@ -86,10 +94,13 @@ func (a *API) AcceptOrder(o *AcceptOrderRequest) (err error) {
 
 	err = o.Error()
 	if err != nil {
+		err = fmt.Errorf("gowhmcs acceptorder error: %v", err)
 		return
 	}
 
-	_, err = a.Do("acceptorder", o)
+	if _, err = a.Do("acceptorder", o); err != nil {
+		err = fmt.Errorf("gowhmcs acceptorder error: %v", err)
+	}
 	return
 
 }
@@ -99,15 +110,20 @@ func (a *API) AddOrder(o *Order) (r *OrderResponse, err error) {
 
 	err = o.Error()
 	if err != nil {
+		err = fmt.Errorf("gowhmcs addorder error: %v", err)
 		return
 	}
 
 	body, err := a.Do("addorder", o)
 	if err != nil {
+		err = fmt.Errorf("gowhmcs addorder error: %v (%s)", err, string(body))
 		return
 	}
 
-	err = json.Unmarshal(body, &r)
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("gowhmcs addorder error: %s", string(body))
+		return
+	}
 	return
 
 }
@@ -117,10 +133,13 @@ func (a *API) Whois(domain string) (w WhoisInfo, err error) {
 
 	body, err := a.Do("domainwhois", &WhoisRequest{"domainwhois", domain})
 	if err != nil {
+		err = fmt.Errorf("gowhmcs whois error: %v", err)
 		return
 	}
 
-	err = json.Unmarshal(body, &w)
+	if err = json.Unmarshal(body, &w); err != nil {
+		err = fmt.Errorf("gowhmcs whois error: %v", err)
+	}
 	return
 
 }
@@ -132,7 +151,7 @@ func (a *API) ClientExists(email string) (bool, error) {
 		if err.Error() == ErrClientNotFound {
 			return false, nil
 		}
-		return false, err
+		return false, fmt.Errorf("gowhmcs clientexists error: %v", err)
 	}
 	return true, nil
 }
@@ -147,15 +166,20 @@ func (a *API) AddClient(c *NewClient) (r *AddClientResult, err error) {
 
 	body, err := a.Do("addclient", &c)
 	if err != nil {
+		err = fmt.Errorf("gowhmcs addclient error: %v", err)
 		return
 	}
 
 	r = &AddClientResult{}
-	err = json.Unmarshal(body, &r)
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("gowhmcs addclient error: %v", err)
+		return
+	}
+
 	return
 }
 
-func (a *API) UpdateClientProduct (p *ClientProduct) (r *UpdateClientProductResult, err error) {
+func (a *API) UpdateClientProduct(p *ClientProduct) (r *UpdateClientProductResult, err error) {
 
 	err = p.Error()
 	if err != nil {
@@ -164,10 +188,15 @@ func (a *API) UpdateClientProduct (p *ClientProduct) (r *UpdateClientProductResu
 
 	body, err := a.Do("updateclientproduct", &p)
 	if err != nil {
+		err = fmt.Errorf("gowhmcs updateclientproduct error: %v", err)
 		return
 	}
 
 	r = &UpdateClientProductResult{}
-	err = json.Unmarshal(body, r)
+	if err = json.Unmarshal(body, r); err != nil {
+		err = fmt.Errorf("gowhmcs updateclientproduct error: %v", err)
+		return
+	}
+
 	return
 }

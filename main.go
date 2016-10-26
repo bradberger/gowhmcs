@@ -3,6 +3,7 @@
 package whmcs
 
 import (
+	"bytes"
 	"crypto/md5"
 	"encoding/base64"
 	"encoding/json"
@@ -109,7 +110,7 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 	}
 
 	// Now encode that into a map[string]string to change to url.Values{}
-	m := make(map[string]string)
+	m := make(map[string]interface{})
 	err = json.Unmarshal(jsonData, &m)
 	if err != nil {
 		return []byte{}, err
@@ -122,7 +123,34 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 
 	form := url.Values{}
 	for k, v := range m {
-		form.Add(k, v)
+		switch v.(type) {
+		case int64:
+			form.Add(k, fmt.Sprintf("%d", v.(int64)))
+		case int32:
+			form.Add(k, fmt.Sprintf("%d", v.(int32)))
+		case int16:
+			form.Add(k, fmt.Sprintf("%d", v.(int16)))
+		case int:
+			form.Add(k, fmt.Sprintf("%d", v.(int)))
+		case uint64:
+			form.Add(k, fmt.Sprintf("%d", v.(uint64)))
+		case uint32:
+			form.Add(k, fmt.Sprintf("%d", v.(uint32)))
+		case uint16:
+			form.Add(k, fmt.Sprintf("%d", v.(uint16)))
+		case uint:
+			form.Add(k, fmt.Sprintf("%d", v.(uint)))
+		case float32:
+			form.Add(k, fmt.Sprintf("%.2f", v.(float32)))
+		case float64:
+			form.Add(k, fmt.Sprintf("%.2f", v.(float64)))
+		case string:
+			form.Add(k, v.(string))
+		case []byte:
+			form.Add(k, string(v.([]byte)))
+		default:
+			form.Add(k, fmt.Sprintf("%#v", v))
+		}
 	}
 
 	// POST it.
@@ -139,12 +167,21 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 		return []byte{}, err
 	}
 
+	// If error reporting is on, it can mess up the response, so this is a (probably lame)
+	// attempt to get the JSON and ignore the PHP error output.
+	body = bytes.TrimSpace(body)
+	if bytes.HasSuffix(body, []byte("}")) && !bytes.HasPrefix(body, []byte("{")) {
+		log.Printf("Body probably displaying errors")
+		if idx := bytes.Index(body, []byte("{")); idx > -1 {
+			body = body[idx:]
+		}
+	}
 	log.Printf("Body: %s", body)
 
 	// The most basic responses have no message, so allow for that here.
 	s := APIBasicResponse{}
 	if err := json.Unmarshal(body, &s); err != nil {
-		return body, err
+		return body, fmt.Errorf("gowhmcs error processing response: %s", string(body))
 	}
 
 	// We do this to first check for errors.
@@ -153,7 +190,7 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 
 		e := APIResponse{}
 		if err := json.Unmarshal(body, &e); err != nil {
-			return body, err
+			return body, fmt.Errorf("gowhmcs response error: %s", string(body))
 		}
 
 		if err := e.Error(); err != nil {

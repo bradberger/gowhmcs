@@ -23,7 +23,7 @@ type Order struct {
 
 	// Required attributes
 	ClientID      int64  `json:"clientid,string"`
-	PID           int64  `json:"pid,string"`
+	PID           int64  `json:"pid,string,omitempty"`
 	Domain        string `json:"domain"`
 	BillingCycle  string `json:"billingcycle"`
 	DomainType    string `json:"domaintype"`
@@ -51,13 +51,15 @@ type Order struct {
 	RootPw    string `json:"rootpw,omitempty"`
 
 	// For domain reg only
-	ContactID       int64  `json:"contactid,omitempty"`
-	DNSManagement   bool   `json:"dnsmanagement,omitempty"`
-	EmailForwarding bool   `json:"emailforwarding,omitempty"`
-	IDProtection    bool   `json:"idprotection,omitempty"`
-	Nameserver2     string `json:"nameserver2,omitempty"`
-	Nameserver3     string `json:"nameserver3,omitempty"`
-	Nameserver4     string `json:"nameserver4,omitempty"`
+	ContactID           int64  `json:"contactid,omitempty"`
+	DNSManagement       bool   `json:"dnsmanagement,omitempty"`
+	EmailForwarding     bool   `json:"emailforwarding,omitempty"`
+	IDProtection        bool   `json:"idprotection,omitempty"`
+	Nameserver2         string `json:"nameserver2,omitempty"`
+	Nameserver3         string `json:"nameserver3,omitempty"`
+	Nameserver4         string `json:"nameserver4,omitempty"`
+	DomainRenewOverride int64  `json:"domainrenewoverride,omitempty"`
+	DomainPriceOverride int64  `json:"domainpriceoverride,omitempty"`
 }
 
 func (o *Order) Error() error {
@@ -69,7 +71,7 @@ type OrderResponse struct {
 	Result     string `json:"result"`
 	OrderID    int64  `json:"orderid"`
 	InvoiceID  int64  `json:"invoiceid"`
-	ProductIDs string `json:'productids'`
+	ProductIDs string `json:"productids"`
 	AddonIDs   string `json:"addonids"`
 	DomainIDs  string `json:"domainids"`
 }
