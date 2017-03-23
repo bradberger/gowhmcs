@@ -40,11 +40,25 @@ type NewClient struct {
 	SkipValidation bool              `json:"skipvalidation,string,omitempty"`
 }
 
+type ValidateLogin struct {
+	Email string `json:"email"`
+	Password2 string `json:"password2"`
+}
+
 // AddClientResult is the WHMCS response when adding a client.
 type AddClientResult struct {
 	ClientID int64  `json:"clientid"`
 	Result   string `json:"result"`
 	Message  string `json:"message"`
+}
+
+type ValidateLoginResult struct {
+	UserID int64  `json:"userid"`
+	ContactID int64 `json:"contactid"`
+	PasswordHash string `json:"passwordhash"`
+	Result   string `json:"result"`
+	Message  string `json:"message"`
+
 }
 
 // ClientDetailsReq is the struct of parameters available to retrieve client details.
@@ -55,5 +69,9 @@ type ClientDetailsReq struct {
 }
 
 func (c *NewClient) Error() error {
+	return nil
+}
+
+func (v *ValidateLogin) Error() error {
 	return nil
 }
