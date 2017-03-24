@@ -179,6 +179,26 @@ func (a *API) AddClient(c *NewClient) (r *AddClientResult, err error) {
 	return
 }
 
+func (a *API) ValidateLogin(v *ValidateLogin) (r *ValidateLoginResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+
+	body, err := a.Do("validatelogin", &v)
+	if err != nil {
+		err = fmt.Errorf("gowhmcs validatelogin error: %v", err)
+		return
+	}
+
+	r = &ValidateLoginResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("gowhmcs validatelogin error: %v", err)
+	}
+
+	return
+}
+
 func (a *API) UpdateClientProduct(p *ClientProduct) (r *UpdateClientProductResult, err error) {
 
 	err = p.Error()

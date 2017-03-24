@@ -1,16 +1,16 @@
 package whmcs
 
 import (
-    "errors"
+	"errors"
 )
 
 var (
-    ErrNoProductID = errors.New("No pid specified")
+	ErrNoProductID = errors.New("No pid specified")
 )
 
 type UpdateClientProductResult struct {
-    Result    string `json:"result" xml:"result"`
-    ServiceID string `json:"serviceid" xml:"serviceid"`
+	Result    string `json:"result" xml:"result"`
+	ServiceID string `json:"serviceid" xml:"serviceid"`
 }
 
 type ClientProduct struct {
@@ -42,8 +42,8 @@ type ClientProduct struct {
 }
 
 func (p *ClientProduct) Error() error {
-    if p.ServiceID == "" {
-        return ErrNoProductID
-    }
-    return nil
+	if p.ServiceID == "" {
+		return ErrNoProductID
+	}
+	return nil
 }
