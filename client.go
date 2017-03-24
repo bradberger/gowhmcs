@@ -41,7 +41,7 @@ type NewClient struct {
 }
 
 type ValidateLogin struct {
-	Email string `json:"email"`
+	Email     string `json:"email"`
 	Password2 string `json:"password2"`
 }
 
@@ -53,12 +53,11 @@ type AddClientResult struct {
 }
 
 type ValidateLoginResult struct {
-	UserID int64  `json:"userid"`
-	ContactID int64 `json:"contactid"`
+	UserID       int64  `json:"userid"`
+	ContactID    int64  `json:"contactid"`
 	PasswordHash string `json:"passwordhash"`
-	Result   string `json:"result"`
-	Message  string `json:"message"`
-
+	Result       string `json:"result"`
+	Message      string `json:"message"`
 }
 
 // ClientDetailsReq is the struct of parameters available to retrieve client details.
