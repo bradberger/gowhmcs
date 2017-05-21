@@ -14,7 +14,7 @@ type UpdateClientProductResult struct {
 }
 
 type ClientProduct struct {
-	ServiceID            string        `json:"serviceid" xml:"serviceid"`
+	ServiceID            int64         `json:"serviceid" xml:"serviceid"`
 	PID                  string        `json:"pid,omitempty" xml:"pid,omitempty"`
 	ServerID             string        `json:"serverid,omitempty" xml:"serverid,omitempty"`
 	RegDate              ProductDate   `json:"regdate,omitempty" xml:"regdate,omitempty"`
@@ -42,7 +42,7 @@ type ClientProduct struct {
 }
 
 func (p *ClientProduct) Error() error {
-	if p.ServiceID == "" {
+	if p.ServiceID == 0 {
 		return ErrNoProductID
 	}
 	return nil

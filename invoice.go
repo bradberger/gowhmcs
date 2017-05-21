@@ -34,7 +34,7 @@ type CreateInvoiceResponse struct {
 // UpdateInvoiceResponse is the WHMCS response when updating an invoice.
 type UpdateInvoiceResponse struct {
 	Result    string `json:"result"`
-	InvoiceID int64  `json:"invoiceid,string"`
+	InvoiceID int64  `json:"invoiceid"`
 }
 
 // UpdateInvoiceRequest contains the parameters available to update an existing invoice.

@@ -52,7 +52,7 @@ type ExistingClient struct {
 // UpdateClientResult is the WHMCS response when updating a client.
 type UpdateClientResult struct {
 	Result   string `json:"result"`
-	ClientID int64  `json:"clientid,string"`
+	ClientID int64  `json:"clientid"`
 }
 
 func (c *ExistingClient) Error() error {

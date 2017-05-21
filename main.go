@@ -155,7 +155,7 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 
 	// POST it.
 	log.Printf("Send: %+v", m)
-	url := fmt.Sprintf("%s/includes/api.php", a.Endpoint)
+	url := fmt.Sprintf("%s/includes/api.php", strings.TrimSuffix(a.Endpoint, "/"))
 	r, err := http.PostForm(url, form)
 	if err != nil {
 		return []byte{}, err
