@@ -10,7 +10,7 @@ var (
 
 type UpdateClientProductResult struct {
 	Result    string `json:"result" xml:"result"`
-	ServiceID string `json:"serviceid" xml:"serviceid"`
+	ServiceID int64  `json:"serviceid" xml:"serviceid"`
 }
 
 type ClientProduct struct {
