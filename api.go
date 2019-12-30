@@ -187,53 +187,51 @@ func (a *API) ValidateLogin(v *ValidateLogin) (r *ValidateLoginResult, err error
 
 	body, err := a.Do("validatelogin", &v)
 	if err != nil {
-		err = fmt.Errorf("gowhmcs validatelogin error: %v", err)
+		err = fmt.Errorf("%v", err)
 		return
 	}
 
 	r = &ValidateLoginResult{}
 	if err = json.Unmarshal(body, &r); err != nil {
-		err = fmt.Errorf("gowhmcs validatelogin error: %v", err)
+		err = fmt.Errorf("%v", err)
 	}
 
 	return
 }
 
 func (a *API) GetClientsProducts(v *GetClientsProducts) (r *GetClientsProductsResult, err error) {
-    err = v.Error()
-    if err != nil {
-        return
-    }
-    body, err := a.Do("GetClientsProducts", &v)
-    if err != nil {
-        err = fmt.Errorf("%v", err)
-        return
-    }
-    r = &GetClientsProductsResult{}
-    if err = json.Unmarshal(body, &r); err != nil {
-        err = fmt.Errorf("%v", err)
-    }
-    return
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("GetClientsProducts", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &GetClientsProductsResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
+	return
 }
 
 func (a *API) DecryptPassword(v *DecryptPassword) (r *DecryptPasswordResult, err error) {
-    err = v.Error()
-    if err != nil {
-        return
-    }
-    body, err := a.Do("DecryptPassword", &v)
-    if err != nil {
-        err = fmt.Errorf("%v", err)
-        return
-    }
-    r = &DecryptPasswordResult{}
-    if err = json.Unmarshal(body, &r); err != nil {
-        err = fmt.Errorf("%v", err)
-    }
-    return
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("DecryptPassword", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &DecryptPasswordResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
+	return
 }
-
-
 
 func (a *API) UpdateClientProduct(p *ClientProduct) (r *UpdateClientProductResult, err error) {
 
@@ -252,6 +250,26 @@ func (a *API) UpdateClientProduct(p *ClientProduct) (r *UpdateClientProductResul
 	if err = json.Unmarshal(body, r); err != nil {
 		err = fmt.Errorf("gowhmcs updateclientproduct error: %v", err)
 		return
+	}
+
+	return
+}
+
+// Reset account password
+
+func (a *API) ResetPassword(v *ResetPassword) (r *ResetPasswordResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("ResetPassword", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &ResetPasswordResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
 	}
 
 	return

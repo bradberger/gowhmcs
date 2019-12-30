@@ -51,6 +51,9 @@ type DecryptPassword struct{
 }
 
 
+type ResetPassword struct{
+    Email string `json:"email"`
+}
 
 
 type GetClientsProducts  struct {
@@ -91,6 +94,9 @@ type DecryptPasswordResult struct {
     Password      string `json:"password"`
 }
 
+type ResetPasswordResult struct{
+    Result       string `json:"result"`
+}
 
 // ClientDetailsReq is the struct of parameters available to retrieve client details.
 type ClientDetailsReq struct {
@@ -106,6 +112,11 @@ func (c *NewClient) Error() error {
 func (v *ValidateLogin) Error() error {
 	return nil
 }
+
+func (v *ResetPassword) Error() error {
+    return nil
+}
+
 
 func (v *GetClientsProducts) Error() error {
    return nil
