@@ -199,6 +199,42 @@ func (a *API) ValidateLogin(v *ValidateLogin) (r *ValidateLoginResult, err error
 	return
 }
 
+func (a *API) GetClientsProducts(v *GetClientsProducts) (r *GetClientsProductsResult, err error) {
+    err = v.Error()
+    if err != nil {
+        return
+    }
+    body, err := a.Do("GetClientsProducts", &v)
+    if err != nil {
+        err = fmt.Errorf("%v", err)
+        return
+    }
+    r = &GetClientsProductsResult{}
+    if err = json.Unmarshal(body, &r); err != nil {
+        err = fmt.Errorf("%v", err)
+    }
+    return
+}
+
+func (a *API) DecryptPassword(v *DecryptPassword) (r *DecryptPasswordResult, err error) {
+    err = v.Error()
+    if err != nil {
+        return
+    }
+    body, err := a.Do("DecryptPassword", &v)
+    if err != nil {
+        err = fmt.Errorf("%v", err)
+        return
+    }
+    r = &DecryptPasswordResult{}
+    if err = json.Unmarshal(body, &r); err != nil {
+        err = fmt.Errorf("%v", err)
+    }
+    return
+}
+
+
+
 func (a *API) UpdateClientProduct(p *ClientProduct) (r *UpdateClientProductResult, err error) {
 
 	err = p.Error()
