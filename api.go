@@ -256,7 +256,6 @@ func (a *API) UpdateClientProduct(p *ClientProduct) (r *UpdateClientProductResul
 }
 
 // Reset account password
-
 func (a *API) ResetPassword(v *ResetPassword) (r *ResetPasswordResult, err error) {
 	err = v.Error()
 	if err != nil {
@@ -268,6 +267,25 @@ func (a *API) ResetPassword(v *ResetPassword) (r *ResetPasswordResult, err error
 		return
 	}
 	r = &ResetPasswordResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
+
+	return
+}
+
+//Terminate a service
+func (a *API) TerminateService(v *TerminateService) (r *TerminateServiceResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("ModuleTerminate", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &TerminateServiceResult{}
 	if err = json.Unmarshal(body, &r); err != nil {
 		err = fmt.Errorf("%v", err)
 	}

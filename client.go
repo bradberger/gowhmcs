@@ -45,34 +45,32 @@ type ValidateLogin struct {
 	Password2 string `json:"password2"`
 }
 
-
-type DecryptPassword struct{
-    Password2 string `json:"password2"`
+type DecryptPassword struct {
+	Password2 string `json:"password2"`
 }
 
-
-type ResetPassword struct{
-    Email string `json:"email"`
+type ResetPassword struct {
+	Email string `json:"email"`
 }
 
-
-type GetClientsProducts  struct {
-    ServiceId int `json:"serviceid"`
+type TerminateService struct {
+	Id string `json:"id"`
 }
 
-
-type GetClientsProductsResult  struct {
-    Result   string `json:"result"`
-    ClientID int64  `json:"clientid"`
-    ServiceID string  `json:"serviceid"`
-    Pid int64  `json:"pid"`
-    Domain string  `json:"domain"`
-    TotalResults int64  `json:"totalresults"`
-    StartNumber int64  `json:"startnumber"`
-    NumReturned int64  `json:"numreturned"`
+type GetClientsProducts struct {
+	ServiceId int `json:"serviceid"`
 }
 
-
+type GetClientsProductsResult struct {
+	Result       string `json:"result"`
+	ClientID     int64  `json:"clientid"`
+	ServiceID    string `json:"serviceid"`
+	Pid          int64  `json:"pid"`
+	Domain       string `json:"domain"`
+	TotalResults int64  `json:"totalresults"`
+	StartNumber  int64  `json:"startnumber"`
+	NumReturned  int64  `json:"numreturned"`
+}
 
 // AddClientResult is the WHMCS response when adding a client.
 type AddClientResult struct {
@@ -90,12 +88,16 @@ type ValidateLoginResult struct {
 }
 
 type DecryptPasswordResult struct {
-    Result       string `json:"result"`
-    Password      string `json:"password"`
+	Result   string `json:"result"`
+	Password string `json:"password"`
 }
 
-type ResetPasswordResult struct{
-    Result       string `json:"result"`
+type ResetPasswordResult struct {
+	Result string `json:"result"`
+}
+
+type TerminateServiceResult struct {
+	Result string `json:"result"`
 }
 
 // ClientDetailsReq is the struct of parameters available to retrieve client details.
@@ -114,15 +116,17 @@ func (v *ValidateLogin) Error() error {
 }
 
 func (v *ResetPassword) Error() error {
-    return nil
+	return nil
 }
 
-
 func (v *GetClientsProducts) Error() error {
-   return nil
+	return nil
 }
 
 func (v *DecryptPassword) Error() error {
-    return nil
+	return nil
 }
 
+func (v *TerminateService) Error() error {
+	return nil
+}
