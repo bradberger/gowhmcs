@@ -24,6 +24,31 @@ func (a *API) AddTransaction(t *Transaction) error {
 	return nil
 }
 
+
+// AddInvoicePayment
+func (a *API) AddInvoicePayment(i *AddInvoicePaymentRequest) (r *AddInvoicePaymentResponse, err error) {
+
+        err = i.Error()
+        if err != nil {
+                return
+        }
+
+        body, err := a.Do("AddInvoicePayment", i)
+        if err != nil {
+                err = fmt.Errorf("gowhmcs updateinvoice error: %v", err)
+                return
+        }
+
+        r = &UpdateInvoiceResponse{}
+        if err = json.Unmarshal(body, r); err != nil {
+                err = fmt.Errorf("gowhmcs updateinvoice error: %v", err)
+        }
+
+        return
+
+}
+
+
 // UpdateInvoice updates the invoice with the given parameters of `r`.
 func (a *API) UpdateInvoice(i *UpdateInvoiceRequest) (r *UpdateInvoiceResponse, err error) {
 
