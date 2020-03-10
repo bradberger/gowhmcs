@@ -54,9 +54,9 @@ func (r *UpdateInvoiceRequest) Error() error {
 
 // AddInvoicePaymentRequest
 type AddInvoicePaymentRequest struct {
-	InvoiceID int64  `json:"invoiceid`
-	TransID   string `json:"transid`
-	Gateway   string `json:"gateway`
+	InvoiceID int64  `json:"invoiceid,string"`
+	TransID   string `json:"transid"`
+	Gateway   string `json:"gateway"`
 }
 
 type AddInvoicePaymentResponse struct {
