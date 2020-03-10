@@ -64,7 +64,7 @@ type AddInvoicePaymentResponse struct {
 }
 
 
-func (r *UpdateInvoiceRequest) Error() error {
+func (r *AddInvoicePaymentRequest) Error() error {
         return nil
 }
 

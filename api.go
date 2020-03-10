@@ -39,7 +39,7 @@ func (a *API) AddInvoicePayment(i *AddInvoicePaymentRequest) (r *AddInvoicePayme
                 return
         }
 
-        r = &UpdateInvoiceResponse{}
+        r = &AddInvoicePaymentResponse{}
         if err = json.Unmarshal(body, r); err != nil {
                 err = fmt.Errorf("gowhmcs updateinvoice error: %v", err)
         }
