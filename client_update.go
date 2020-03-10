@@ -52,11 +52,11 @@ type ExistingClient struct {
 // UpdateClientResult is the WHMCS response when updating a client.
 type UpdateClientResult struct {
 	Result   string `json:"result"`
-	ClientID int64  `json:"clientid,string"`
+	ClientID int64  `json:"clientid"`
 }
 
 func (c *ExistingClient) Error() error {
-	if c.ClientID == "" && c.ClientEmail == "" {
+	if c.ClientID == 0 && c.ClientEmail == "" {
 		return ErrNoClientDetails
 	}
 	return nil
@@ -68,6 +68,6 @@ func (c *ExistingClient) ByEmail(email string) {
 }
 
 // ByID sets the client's ID with the given id string
-func (c *ExistingClient) ByID(id string) {
+func (c *ExistingClient) ByID(id int64) {
 	c.ClientID = id
 }

@@ -71,19 +71,19 @@ func (a *API) UpdateExistingClient(c *ExistingClient) (r *UpdateClientResult, er
 
 	err = c.Error()
 	if err != nil {
-		err = fmt.Errorf("gowhmcs updateexistingclient error: %v", err)
+		err = fmt.Errorf("Error: %v", err)
 		return
 	}
 
 	body, err := a.Do("updateclient", &c)
 	if err != nil {
-		err = fmt.Errorf("gowhmcs updateexistingclient error: %v", err)
+		err = fmt.Errorf("Error: %v", err)
 		return
 	}
 
 	r = &UpdateClientResult{}
 	if err = json.Unmarshal(body, r); err != nil {
-		err = fmt.Errorf("gowhmcs updateexistingclient error: %v", err)
+		err = fmt.Errorf("Error: %v", err)
 	}
 	return
 
