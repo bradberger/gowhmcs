@@ -57,6 +57,11 @@ type TerminateService struct {
 	Id int64 `json:"id"`
 }
 
+type CreateService struct {
+        Id int64 `json:"serviceid"`
+}
+
+
 type GetClientsProducts struct {
 	ServiceId int `json:"serviceid"`
 }
@@ -100,6 +105,11 @@ type TerminateServiceResult struct {
 	Result string `json:"result"`
 }
 
+type CreateServiceResult struct {
+        Result string `json:"result"`
+}
+
+
 // ClientDetailsReq is the struct of parameters available to retrieve client details.
 type ClientDetailsReq struct {
 	ClientID string `json:"clientid,omitempty"`
@@ -130,3 +140,7 @@ func (v *DecryptPassword) Error() error {
 func (v *TerminateService) Error() error {
 	return nil
 }
+func (v *CreateService) Error() error {
+        return nil
+}
+

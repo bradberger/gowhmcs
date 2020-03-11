@@ -27,21 +27,21 @@ func (a *API) AddTransaction(t *Transaction) error {
 
 // AddInvoicePayment
 func (a *API) AddInvoicePayment(i *AddInvoicePaymentRequest) (r *AddInvoicePaymentResponse, err error) {
-
+        
         err = i.Error()
         if err != nil {
                 return
         }
-
-        body, err := a.Do("AddInvoicePayment", i)
+        
+        body, err := a.Do("addinvoicepayment", i)
         if err != nil {
-                err = fmt.Errorf("gowhmcs updateinvoice error: %v", err)
+                err = fmt.Errorf("gowhmcs addinvoicepayment error: %v", err)
                 return
         }
 
         r = &AddInvoicePaymentResponse{}
         if err = json.Unmarshal(body, r); err != nil {
-                err = fmt.Errorf("gowhmcs updateinvoice error: %v", err)
+                err = fmt.Errorf("gowhmcs addinvoicepayment error: %v", err)
         }
 
         return
@@ -317,3 +317,23 @@ func (a *API) TerminateService(v *TerminateService) (r *TerminateServiceResult, 
 
 	return
 }
+
+//Terminate a service
+func (a *API) CreateService(v *CreateService) (r *CreateServiceResult, err error) {
+        err = v.Error()
+        if err != nil {
+                return
+        }
+        body, err := a.Do("ModuleCreate", &v)
+        if err != nil {
+                err = fmt.Errorf("%v", err)
+                return
+        }
+        r = &CreateServiceResult{}
+        if err = json.Unmarshal(body, &r); err != nil {
+                err = fmt.Errorf("%v", err)
+        }
+
+        return
+}
+
