@@ -24,30 +24,28 @@ func (a *API) AddTransaction(t *Transaction) error {
 	return nil
 }
 
-
 // AddInvoicePayment
 func (a *API) AddInvoicePayment(i *AddInvoicePaymentRequest) (r *AddInvoicePaymentResponse, err error) {
-        
-        err = i.Error()
-        if err != nil {
-                return
-        }
-        
-        body, err := a.Do("addinvoicepayment", i)
-        if err != nil {
-                err = fmt.Errorf("gowhmcs addinvoicepayment error: %v", err)
-                return
-        }
 
-        r = &AddInvoicePaymentResponse{}
-        if err = json.Unmarshal(body, r); err != nil {
-                err = fmt.Errorf("gowhmcs addinvoicepayment error: %v", err)
-        }
+	err = i.Error()
+	if err != nil {
+		return
+	}
 
-        return
+	body, err := a.Do("addinvoicepayment", i)
+	if err != nil {
+		err = fmt.Errorf("gowhmcs addinvoicepayment error: %v", err)
+		return
+	}
+
+	r = &AddInvoicePaymentResponse{}
+	if err = json.Unmarshal(body, r); err != nil {
+		err = fmt.Errorf("gowhmcs addinvoicepayment error: %v", err)
+	}
+
+	return
 
 }
-
 
 // UpdateInvoice updates the invoice with the given parameters of `r`.
 func (a *API) UpdateInvoice(i *UpdateInvoiceRequest) (r *UpdateInvoiceResponse, err error) {
@@ -86,6 +84,25 @@ func (a *API) CreateInvoice(i *CreateInvoiceRequest) (r *CreateInvoiceResponse, 
 	}
 
 	r = &CreateInvoiceResponse{}
+	err = json.Unmarshal(body, r)
+	return
+
+}
+
+// Open ticket
+func (a *API) OpenTicket(t *OpenTicketRequest) (r *OpenTicketResponse, err error) {
+
+	err = t.Error()
+	if err != nil {
+		return
+	}
+
+	body, err := a.Do("openticket", t)
+	if err != nil {
+		return
+	}
+
+	r = &OpenTicketResponse{}
 	err = json.Unmarshal(body, r)
 	return
 
@@ -320,20 +337,19 @@ func (a *API) TerminateService(v *TerminateService) (r *TerminateServiceResult, 
 
 //Terminate a service
 func (a *API) CreateService(v *CreateService) (r *CreateServiceResult, err error) {
-        err = v.Error()
-        if err != nil {
-                return
-        }
-        body, err := a.Do("ModuleCreate", &v)
-        if err != nil {
-                err = fmt.Errorf("%v", err)
-                return
-        }
-        r = &CreateServiceResult{}
-        if err = json.Unmarshal(body, &r); err != nil {
-                err = fmt.Errorf("%v", err)
-        }
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("ModuleCreate", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &CreateServiceResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
 
-        return
+	return
 }
-

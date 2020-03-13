@@ -60,11 +60,9 @@ type AddInvoicePaymentRequest struct {
 }
 
 type AddInvoicePaymentResponse struct {
-        Result    string `json:"result"`
+	Result string `json:"result"`
 }
-
 
 func (r *AddInvoicePaymentRequest) Error() error {
-        return nil
+	return nil
 }
-

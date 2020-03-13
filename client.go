@@ -54,13 +54,19 @@ type ResetPassword struct {
 }
 
 type TerminateService struct {
-	Id int64 `json:"serviceid"`
+	Id int64 `json:"id"`
 }
 
 type CreateService struct {
-        Id int64 `json:"serviceid"`
+	Id int64 `json:"serviceid"`
 }
 
+type OpenTicketRequest struct {
+	DeptId   int64  `json:"deptid"`
+	Subject  string `json:"subject"`
+	Message  string `json:"message"`
+	ClientId int64  `json:"clientid"`
+}
 
 type GetClientsProducts struct {
 	ServiceId int `json:"serviceid"`
@@ -106,9 +112,8 @@ type TerminateServiceResult struct {
 }
 
 type CreateServiceResult struct {
-        Result string `json:"result"`
+	Result string `json:"result"`
 }
-
 
 // ClientDetailsReq is the struct of parameters available to retrieve client details.
 type ClientDetailsReq struct {
@@ -141,6 +146,13 @@ func (v *TerminateService) Error() error {
 	return nil
 }
 func (v *CreateService) Error() error {
-        return nil
+	return nil
 }
 
+func (v *OpenTicketRequest) Error() error {
+	return nil
+}
+
+type OpenTicketResponse struct {
+	Result string `json:"result"`
+}

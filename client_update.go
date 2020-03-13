@@ -10,7 +10,7 @@ var (
 )
 
 type ExistingClient struct {
-	ClientID    int64 `"json:clientid,omitempty"`
+	ClientID    int64  `"json:clientid,omitempty"`
 	ClientEmail string `json:"clientemail,omitempty"`
 
 	Firstname           string       `json:"firstname,omitempty"`
