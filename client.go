@@ -54,7 +54,7 @@ type ResetPassword struct {
 }
 
 type TerminateService struct {
-	Id int64 `json:"serviceid"`
+	Id int64 `json:"id"`
 }
 
 type CreateService struct {
@@ -154,5 +154,6 @@ func (v *OpenTicketRequest) Error() error {
 }
 
 type OpenTicketResponse struct {
-	Result string `json:"result"`
+	Result   string `json:"result"`
+	TicketId string `json:"tid"`
 }
