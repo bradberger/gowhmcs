@@ -54,7 +54,7 @@ type ResetPassword struct {
 }
 
 type TerminateService struct {
-	Id int64 `json:"id"`
+	Id int64 `json:"serviceid"`
 }
 
 type CreateService struct {
