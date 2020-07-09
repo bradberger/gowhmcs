@@ -353,3 +353,22 @@ func (a *API) CreateService(v *CreateService) (r *CreateServiceResult, err error
 
 	return
 }
+
+//Send email
+func (a *API) SendEmail(v *SendEmail) (r *SendEmailResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("SendEmail", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &SendEmailResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
+
+	return
+}

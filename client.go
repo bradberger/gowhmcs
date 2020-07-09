@@ -61,6 +61,11 @@ type CreateService struct {
 	Id int64 `json:"serviceid"`
 }
 
+type SendEmail struct {
+	MessageName string `json:"messagename"`
+	Id          int64  `json:"id"`
+}
+
 type OpenTicketRequest struct {
 	DeptId   int64  `json:"deptid"`
 	Subject  string `json:"subject"`
@@ -115,6 +120,10 @@ type CreateServiceResult struct {
 	Result string `json:"result"`
 }
 
+type SendEmailResult struct {
+	Result string `json:"result"`
+}
+
 // ClientDetailsReq is the struct of parameters available to retrieve client details.
 type ClientDetailsReq struct {
 	ClientID string `json:"clientid,omitempty"`
@@ -146,6 +155,10 @@ func (v *TerminateService) Error() error {
 	return nil
 }
 func (v *CreateService) Error() error {
+	return nil
+}
+
+func (v *SendEmail) Error() error {
 	return nil
 }
 
