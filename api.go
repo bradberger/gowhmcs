@@ -24,6 +24,29 @@ func (a *API) AddTransaction(t *Transaction) error {
 	return nil
 }
 
+// AddInvoicePayment
+func (a *API) AddInvoicePayment(i *AddInvoicePaymentRequest) (r *AddInvoicePaymentResponse, err error) {
+
+	err = i.Error()
+	if err != nil {
+		return
+	}
+
+	body, err := a.Do("addinvoicepayment", i)
+	if err != nil {
+		err = fmt.Errorf("gowhmcs addinvoicepayment error: %v", err)
+		return
+	}
+
+	r = &AddInvoicePaymentResponse{}
+	if err = json.Unmarshal(body, r); err != nil {
+		err = fmt.Errorf("gowhmcs addinvoicepayment error: %v", err)
+	}
+
+	return
+
+}
+
 // UpdateInvoice updates the invoice with the given parameters of `r`.
 func (a *API) UpdateInvoice(i *UpdateInvoiceRequest) (r *UpdateInvoiceResponse, err error) {
 
@@ -66,24 +89,43 @@ func (a *API) CreateInvoice(i *CreateInvoiceRequest) (r *CreateInvoiceResponse, 
 
 }
 
+// Open ticket
+func (a *API) OpenTicket(t *OpenTicketRequest) (r *OpenTicketResponse, err error) {
+
+	err = t.Error()
+	if err != nil {
+		return
+	}
+
+	body, err := a.Do("openticket", t)
+	if err != nil {
+		return
+	}
+
+	r = &OpenTicketResponse{}
+	err = json.Unmarshal(body, r)
+	return
+
+}
+
 // UpdateExistingClient updates an existing client.
 func (a *API) UpdateExistingClient(c *ExistingClient) (r *UpdateClientResult, err error) {
 
 	err = c.Error()
 	if err != nil {
-		err = fmt.Errorf("gowhmcs updateexistingclient error: %v", err)
+		err = fmt.Errorf("Error: %v", err)
 		return
 	}
 
 	body, err := a.Do("updateclient", &c)
 	if err != nil {
-		err = fmt.Errorf("gowhmcs updateexistingclient error: %v", err)
+		err = fmt.Errorf("Error: %v", err)
 		return
 	}
 
 	r = &UpdateClientResult{}
 	if err = json.Unmarshal(body, r); err != nil {
-		err = fmt.Errorf("gowhmcs updateexistingclient error: %v", err)
+		err = fmt.Errorf("Error: %v", err)
 	}
 	return
 
@@ -187,15 +229,49 @@ func (a *API) ValidateLogin(v *ValidateLogin) (r *ValidateLoginResult, err error
 
 	body, err := a.Do("validatelogin", &v)
 	if err != nil {
-		err = fmt.Errorf("gowhmcs validatelogin error: %v", err)
+		err = fmt.Errorf("%v", err)
 		return
 	}
 
 	r = &ValidateLoginResult{}
 	if err = json.Unmarshal(body, &r); err != nil {
-		err = fmt.Errorf("gowhmcs validatelogin error: %v", err)
+		err = fmt.Errorf("%v", err)
 	}
 
+	return
+}
+
+func (a *API) GetClientsProducts(v *GetClientsProducts) (r *GetClientsProductsResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("GetClientsProducts", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &GetClientsProductsResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
+	return
+}
+
+func (a *API) DecryptPassword(v *DecryptPassword) (r *DecryptPasswordResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("DecryptPassword", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &DecryptPasswordResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
 	return
 }
 
@@ -216,6 +292,82 @@ func (a *API) UpdateClientProduct(p *ClientProduct) (r *UpdateClientProductResul
 	if err = json.Unmarshal(body, r); err != nil {
 		err = fmt.Errorf("gowhmcs updateclientproduct error: %v", err)
 		return
+	}
+
+	return
+}
+
+// Reset account password
+func (a *API) ResetPassword(v *ResetPassword) (r *ResetPasswordResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("ResetPassword", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &ResetPasswordResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
+
+	return
+}
+
+//Terminate a service
+func (a *API) TerminateService(v *TerminateService) (r *TerminateServiceResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("ModuleTerminate", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &TerminateServiceResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
+
+	return
+}
+
+//Terminate a service
+func (a *API) CreateService(v *CreateService) (r *CreateServiceResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("ModuleCreate", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &CreateServiceResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
+	}
+
+	return
+}
+
+//Send email
+func (a *API) SendEmail(v *SendEmail) (r *SendEmailResult, err error) {
+	err = v.Error()
+	if err != nil {
+		return
+	}
+	body, err := a.Do("SendEmail", &v)
+	if err != nil {
+		err = fmt.Errorf("%v", err)
+		return
+	}
+	r = &SendEmailResult{}
+	if err = json.Unmarshal(body, &r); err != nil {
+		err = fmt.Errorf("%v", err)
 	}
 
 	return
