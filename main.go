@@ -10,7 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
+	//"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -154,7 +154,7 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 	}
 
 	// POST it.
-	log.Printf("Send: %+v", m)
+	//log.Printf("Send: %+v", m)
 	url := fmt.Sprintf("%s/includes/api.php", a.Endpoint)
 	r, err := http.PostForm(url, form)
 	if err != nil {
@@ -171,12 +171,12 @@ func (a *API) Do(cmd string, data interface{}) ([]byte, error) {
 	// attempt to get the JSON and ignore the PHP error output.
 	body = bytes.TrimSpace(body)
 	if bytes.HasSuffix(body, []byte("}")) && !bytes.HasPrefix(body, []byte("{")) {
-		log.Printf("Body probably displaying errors")
+		//log.Printf("Body probably displaying errors")
 		if idx := bytes.Index(body, []byte("{")); idx > -1 {
 			body = body[idx:]
 		}
 	}
-	log.Printf("Body: %s", body)
+	//log.Printf("Body: %s", body)
 
 	// The most basic responses have no message, so allow for that here.
 	s := APIBasicResponse{}
